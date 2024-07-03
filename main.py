@@ -6,7 +6,7 @@ Find city name on google maps quickly
 import pydeck as pdk
 import pandas as pd
 import streamlit as st
-from streamlit_shortcuts import add_keyboard_shortcuts
+# from streamlit_shortcuts import add_keyboard_shortcuts
 import time
 
 
@@ -55,7 +55,8 @@ def main():
                           "Indonesia", "Philippines", "Taiwan", "Korea, South", "Japan", "Australia", "New Zealand",
                           "Kyrgyzstan", "Kazakhstan", "Mongolia", "Dominican Republic"])
     with col1:
-        st.button("Randomize City (or press 1)", on_click=newcity(countries=region, min=minpop, max=maxpop))
+        # st.button("Randomize City (or press 1)", on_click=newcity(countries=region, min=minpop, max=maxpop))
+        st.button("Randomize City", on_click=newcity(countries=region, min=minpop, max=maxpop))
     with col4:
         st.write("\n")
         st.write("\n")
@@ -63,9 +64,9 @@ def main():
         st.write(str(st.session_state.numcities) + " Cities from " + str(st.session_state.numcountries) +
                  " countries fit the criteria")
 
-    add_keyboard_shortcuts({
-        '1': 'Randomize City (or press 1)',
-    })
+    # add_keyboard_shortcuts({
+    #     '1': 'Randomize City (or press 1)',
+    # })
 
     layer1 = pdk.Layer(
         'ScatterplotLayer',
