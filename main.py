@@ -6,7 +6,7 @@ Find city name on google maps quickly
 import pydeck as pdk
 import pandas as pd
 import streamlit as st
-# from streamlit_shortcuts import add_keyboard_shortcuts
+from streamlit_shortcuts import add_keyboard_shortcuts
 import time
 
 
@@ -25,8 +25,6 @@ def main():
         st.session_state.loc = None
     if 'prevloc' not in st.session_state:
         st.session_state.prevloc = None
-    if 'prevcity' not in st.session_state:
-        st.session_state.prevcity = None
     if 'numcities' not in st.session_state:
         st.session_state.numcities = None
     if 'numcountries' not in st.session_state:
@@ -34,14 +32,9 @@ def main():
     if 'radius' not in st.session_state:
         st.session_state.radius = 200000
     if 'prevcity' not in st.session_state:
-        prevcityname = "N/A"
-        prevcitycountry = "N/A"
-        prevcitypopulation = "N/A"
-    else:
-        prevcityname = st.session_state.prevcity["city"].iloc[0]
-        prevcitycountry = st.session_state.prevcity["country"].iloc[0]
-        prevcitypopulation = f'{int(st.session_state.prevcity["population"].iloc[0]):,}'
-        
+        st.session_state.prevcity = pd.DataFrame([["N/A", "N/A", "N/A", "N/A", "0"]],
+                                                 columns=["city", "lat", "lng", "country", "population"])
+
 
     col1, col2, col3, col4 = st.columns(4)
     poprange = []
@@ -64,8 +57,8 @@ def main():
                           "Indonesia", "Philippines", "Taiwan", "Korea, South", "Japan", "Australia", "New Zealand",
                           "Kyrgyzstan", "Kazakhstan", "Mongolia", "Dominican Republic"])
     with col1:
-        # st.button("Randomize City (or press 1)", on_click=newcity(countries=region, min=minpop, max=maxpop))
-        st.button("Randomize City", on_click=newcity(countries=region, min=minpop, max=maxpop))
+        st.button("Randomize City (or press 1)", on_click=newcity(countries=region, min=minpop, max=maxpop))
+        # st.button("Randomize City", on_click=newcity(countries=region, min=minpop, max=maxpop))
     with col4:
         st.write("\n")
         st.write("\n")
@@ -73,9 +66,9 @@ def main():
         st.write(str(st.session_state.numcities) + " Cities from " + str(st.session_state.numcountries) +
                  " countries fit the criteria")
 
-    # add_keyboard_shortcuts({
-    #     '1': 'Randomize City (or press 1)',
-    # })
+    add_keyboard_shortcuts({
+        '1': 'Randomize City (or press 1)',
+    })
 
     layer1 = pdk.Layer(
         'ScatterplotLayer',
@@ -107,14 +100,14 @@ def main():
                              )
 
     st.pydeck_chart(deck, use_container_width=True)
-    
+
     # try:
     #     # st.subheader("Previous city: " + st.session_state.prevcity["city"].iloc[0] + ", " + st.session_state.prevcity["country"].iloc[0] + ". Population: " + f'{int(st.session_state.prevcity["population"].iloc[0]):,}')
     # except:
     #     "Previous city: N/A"
 
-    st.subheader("Previous city: " + prevcityname + ", " + prevcitycountry + ". Population: " + prevcitypopulation)
-    
+    st.subheader("Previous city: " + st.session_state.prevcity["city"].iloc[0] + ", " + st.session_state.prevcity["country"].iloc[0] + ". Population: " + f'{int(st.session_state.prevcity["population"].iloc[0]):,}')
+
     st.session_state.prevloc = st.session_state.loc
     st.session_state.prevcity = st.session_state.city
 
