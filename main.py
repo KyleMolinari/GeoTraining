@@ -33,6 +33,15 @@ def main():
         st.session_state.numcountries = None
     if 'radius' not in st.session_state:
         st.session_state.radius = 200000
+    if 'prevcity' not in st.session_state:
+        prevcityname = "N/A"
+        prevcitycountry = "N/A"
+        prevcitypopulation = "N/A"
+    else:
+        prevcityname = st.session_state.prevcity["city"].iloc[0]
+        prevcitycountry = st.session_state.prevcity["country"].iloc[0]
+        prevcitypopulation = f'{int(st.session_state.prevcity["population"].iloc[0]):,}'
+        
 
     col1, col2, col3, col4 = st.columns(4)
     poprange = []
@@ -98,10 +107,14 @@ def main():
                              )
 
     st.pydeck_chart(deck, use_container_width=True)
-    try:
-        st.subheader("Previous city: " + st.session_state.prevcity["city"].iloc[0] + ", " + st.session_state.prevcity["country"].iloc[0] + ". Population: " + f'{int(st.session_state.prevcity["population"].iloc[0]):,}')
-    except:
-        "Previous city: N/A"
+    
+    # try:
+    #     # st.subheader("Previous city: " + st.session_state.prevcity["city"].iloc[0] + ", " + st.session_state.prevcity["country"].iloc[0] + ". Population: " + f'{int(st.session_state.prevcity["population"].iloc[0]):,}')
+    # except:
+    #     "Previous city: N/A"
+
+    st.subheader("Previous city: " + prevcityname + ", " + prevcitycountry + ". Population: " + prevcitypopulation)
+    
     st.session_state.prevloc = st.session_state.loc
     st.session_state.prevcity = st.session_state.city
 
