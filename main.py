@@ -99,7 +99,7 @@ def main():
                              layers=[layer1, layer2]
                              )
 
-    st.pydeck_chart(deck, use_container_width=True)
+    showmap(deck)
 
     # try:
     #     # st.subheader("Previous city: " + st.session_state.prevcity["city"].iloc[0] + ", " + st.session_state.prevcity["country"].iloc[0] + ". Population: " + f'{int(st.session_state.prevcity["population"].iloc[0]):,}')
@@ -112,6 +112,11 @@ def main():
     st.session_state.prevcity = st.session_state.city
 
     time.sleep(0.5)
+
+
+@st.cache
+def showmap(deck):
+    st.pydeck_chart(deck, use_container_width=True)
 
 
 def newcity(countries="All", min=1000000, max=100000000):
